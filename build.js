@@ -22,7 +22,6 @@ glob('./src/**', function(err, files) {
     console.log(files);
     files.forEach(function(file) {
         var extname = path.extname(file);
-        console.log(extname);
         switch (true) {
             case /\.js$/.test(extname):
                 var _file = resolve(file),
