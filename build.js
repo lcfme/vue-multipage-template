@@ -19,7 +19,6 @@ function resolve(...args) {
 shell.rm('-rf', resolve('./dist'));
 
 glob('./src/**', function(err, files) {
-    console.log(files);
     files.forEach(function(file) {
         var extname = path.extname(file);
         switch (true) {
