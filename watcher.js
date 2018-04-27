@@ -13,7 +13,7 @@ gaze('./src/**', function(err, watcher) {
 });
 
 function reCompile() {
-    if (shell.exec('./build.js').code !== 0) {
+    if (shell.exec('NODE_ENV=development && node ./build.js').code !== 0) {
         process.exit(1);
     }
     console.log('compiled');

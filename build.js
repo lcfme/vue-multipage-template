@@ -29,9 +29,11 @@ glob('./src/**', function(err, files) {
                     _targetFile = resolve('dist', _relativeDir),
                     _targetDir = path.dirname(_targetFile);
                 shell.mkdir('-p', _targetDir);
-                var a = browserify({
+                browserify({
                     entries: _file,
-                    debug: config.env === 'development'
+                    debug: config.env === 'development',
+                    insertGlobals: true,
+                    builtins: true,
                 })
                     .transform('vueify')
                     .transform('babelify', {
