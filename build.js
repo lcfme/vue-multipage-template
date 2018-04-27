@@ -10,6 +10,8 @@ var vueify = require('vueify');
 
 var config = require('./config');
 
+process.env.NODE_ENV = config.env;
+
 function resolve(...args) {
     return path.resolve(__dirname, ...args);
 }
