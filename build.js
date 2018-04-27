@@ -18,33 +18,42 @@ function resolve(...args) {
 
 shell.rm('-rf', resolve('./dist'));
 
-glob('./src/*/index.js', function(err, files) {
+glob('./src/**', function(err, files) {
+    console.log(files);
     files.forEach(function(file) {
-        var _file = resolve(file),
-            _baseDir = resolve('./src'),
-            _relativeDir = path.relative(_baseDir, _file),
-            _targetFile = resolve('dist', _relativeDir),
-            _targetDir = path.dirname(_targetFile);
-        shell.mkdir('-p', _targetDir);
-        var a = browserify({
-            entries: _file,
-            debug: config.env === 'development',
-        })
-        .transform('vueify')
-        .transform('babelify', {presets: ['env'], plugins: ['transform-runtime']})
-        .bundle().pipe(fs.createWriteStream(_targetFile));
+        var extname = path.extname(file);
+        console.log(extname);
+        switch (true) {
+            case /\.js$/.test(extname):
+                var _file = resolve(file),
+                    _baseDir = resolve('./src'),
+                    _relativeDir = path.relative(_baseDir, _file),
+                    _targetFile = resolve('dist', _relativeDir),
+                    _targetDir = path.dirname(_targetFile);
+                shell.mkdir('-p', _targetDir);
+                var a = browserify({
+                    entries: _file,
+                    debug: config.env === 'development'
+                })
+                    .transform('vueify')
+                    .transform('babelify', {
+                        presets: ['env'],
+                        plugins: ['transform-runtime']
+                    })
+                    .bundle()
+                    .pipe(fs.createWriteStream(_targetFile));
+                break;
+            case /\.js$|\.vue$/.test(extname):
+                files.forEach(function(file) {
+                    var _file = resolve(file),
+                        _baseDir = resolve('./src'),
+                        _relativeDir = path.relative(_baseDir, _file),
+                        _targetFile = resolve('dist', _relativeDir),
+                        _targetDir = path.dirname(_targetFile);
+                    shell.mkdir('-p', _targetDir);
+                    shell.cp(_file, _targetFile);
+                });
+                break;
+        }
     });
 });
-
-glob('./src/**/*.!(vue|js)', function(err, files) {
-    files.forEach(function(file) {
-        var _file = resolve(file),
-            _baseDir = resolve('./src'),
-            _relativeDir = path.relative(_baseDir, _file),
-            _targetFile = resolve('dist', _relativeDir),
-            _targetDir = path.dirname(_targetFile);
-        shell.mkdir('-p', _targetDir);
-        shell.cp(_file, _targetFile);
-    });
-});
-

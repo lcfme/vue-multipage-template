@@ -2,8 +2,9 @@
 
 var gaze = require('gaze');
 var shell = require('shelljs');
-var delayCompile = require('debounce')(reCompile, 800);
+var delayCompile = require('debounce')(reCompile, 200);
 
+reCompile();
 
 gaze('./src/**', function(err, watcher) {
     this.on('all', function(event, filepath) {
@@ -15,5 +16,5 @@ function reCompile() {
     if (shell.exec('./build.js').code !== 0) {
         process.exit(1);
     }
-    console.log('recompiled');
+    console.log('compiled');
 }
