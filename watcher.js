@@ -7,13 +7,13 @@ var delayCompile = require('debounce')(reCompile, 200);
 reCompile();
 
 gaze('./src/**', function(err, watcher) {
-    this.on('all', function(event, filepath) {
+    watcher.on('all', function(event, filepath) {
         delayCompile();
     });
 });
 
 function reCompile() {
-    if (shell.exec('NODE_ENV=development && node ./build.js').code !== 0) {
+    if (shell.exec('node ./build.js').code !== 0) {
         process.exit(1);
     }
     console.log('compiled');

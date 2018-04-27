@@ -33,7 +33,7 @@ glob('./src/**', function(err, files) {
                     entries: _file,
                     debug: config.env === 'development',
                     insertGlobals: true,
-                    builtins: true,
+                    builtins: true
                 })
                     .transform('vueify')
                     .transform('babelify', {
