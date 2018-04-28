@@ -1,12 +1,13 @@
 #! /usr/bin/env node
 
+var path = require('path');
 var gaze = require('gaze');
 var shell = require('shelljs');
 var delayCompile = require('debounce')(reCompile, 200);
 
 reCompile();
 
-gaze('./src/**', function(err, watcher) {
+gaze(path.resolve(__dirname, './src/**'), function(err, watcher) {
     watcher.on('all', function(event, filepath) {
         delayCompile();
     });

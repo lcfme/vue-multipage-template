@@ -43,7 +43,7 @@ glob('./src/**', function(err, files) {
                     .bundle()
                     .pipe(fs.createWriteStream(_targetFile));
                 break;
-            case !/\.js$|\.vue$/.test(extname):
+            default:
                 files.forEach(function(file) {
                     var _file = resolve(file),
                         _baseDir = resolve('./src'),
