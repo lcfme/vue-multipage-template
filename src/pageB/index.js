@@ -1,3 +1,9 @@
-document.write('<h1>Hello World</h1>');
+const _ = require('lodash');
 
-document.write('<br /><div>Index Page</div>');
+document.write(`${foo.toString()} currify this func : ${_.curry(foo).toString}`);
+
+
+
+function foo(a,b,c) {
+    return a + b + c;
+};
