@@ -20,9 +20,8 @@ shell.rm('-rf', resolve('./dist'));
 
 glob('./src/**', function(err, files) {
     files.forEach(function(file) {
-        var extname = path.extname(file);
         switch (true) {
-            case /\.js$/.test(extname):
+            case /index\.js$/.test(file):
                 var _file = resolve(file),
                     _baseDir = resolve('./src'),
                     _relativeDir = path.relative(_baseDir, _file),
@@ -43,16 +42,14 @@ glob('./src/**', function(err, files) {
                     .bundle()
                     .pipe(fs.createWriteStream(_targetFile));
                 break;
-            default:
-                files.forEach(function(file) {
-                    var _file = resolve(file),
-                        _baseDir = resolve('./src'),
-                        _relativeDir = path.relative(_baseDir, _file),
-                        _targetFile = resolve('dist', _relativeDir),
-                        _targetDir = path.dirname(_targetFile);
-                    shell.mkdir('-p', _targetDir);
-                    shell.cp(_file, _targetFile);
-                });
+            case !/\.js$|\.vue$/.test(file):
+                var _file = resolve(file),
+                    _baseDir = resolve('./src'),
+                    _relativeDir = path.relative(_baseDir, _file),
+                    _targetFile = resolve('dist', _relativeDir),
+                    _targetDir = path.dirname(_targetFile);
+                shell.mkdir('-p', _targetDir);
+                shell.cp(_file, _targetFile);
                 break;
         }
     });
