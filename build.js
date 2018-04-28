@@ -42,7 +42,7 @@ glob('./src/**', function(err, files) {
                     .bundle()
                     .pipe(fs.createWriteStream(_targetFile));
                 break;
-            case !/\.js$|\.vue$/.test(file):
+            case !/\.js$|\.vue$|\.less$/.test(file):
                 var _file = resolve(file),
                     _baseDir = resolve('./src'),
                     _relativeDir = path.relative(_baseDir, _file),
